@@ -1,0 +1,144 @@
+# Creado por https://www.toptal.com/developers/gitignore/api/node
+# Editar en https://www.toptal.com/developers/gitignore?templates=node
+
+### Nodo ###
+# Registros
+registros
+*.registro
+npm-debug.log*
+hilo-debug.log*
+hilo-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Informes de diagnóstico (https://nodejs.org/api/report.html)
+informe.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Datos de tiempo de ejecución
+pids
+*.pid
+*.semilla
+*.pid.bloqueo
+
+# Directorio para bibliotecas instrumentadas generadas por jscoverage/JSCover
+lib-cov
+
+# Directorio de cobertura utilizado por herramientas como Estambul
+cobertura
+*.lcov
+
+# cobertura de prueba de Nueva York
+.nyc_output
+
+# Almacenamiento intermedio Grunt (https://gruntjs.com/creating-plugins#storing-task-files)
+.gruñido
+
+# Directorio de dependencias de Bower (https://bower.io/)
+componentes_bower
+
+# configuración de nodo-waf
+.lock-wscript
+
+# Complementos binarios compilados (https://nodejs.org/api/addons.html)
+construir/liberar
+
+# Directorios de dependencia
+módulos_nodo/
+jspm_packages/
+
+# Directorio de dependencias de Snowpack (https://snowpack.dev/)
+módulos_web/
+
+# Caché de TypeScript
+*.tsbuildinfo
+
+# Directorio de caché npm opcional
+.npm
+
+# Caché eslint opcional
+.eslintcache
+
+# Caché de estilo opcional
+.stylelintcache
+
+# Caché de micropaquetes
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Historial REPL opcional
+.node_repl_history
+
+# Salida de 'paquete npm'
+*.tgz
+
+# Archivo de integridad del hilo
+.integridad del hilo
+
+# archivos de variables de entorno dotenv
+.env
+.env.desarrollo.local
+.env.prueba.local
+.env.producción.local
+.env.local
+
+# caché del paquete de paquetes (https://parceljs.org/)
+.cache
+.caché de paquetes
+
+# Salida de compilación de Next.js
+.próximo
+afuera
+
+# Nuxt.js construye/genera salida
+.nuxt
+dist.
+
+# archivos Gatsby
+.cache/
+# Comenta en la línea pública si tu proyecto usa Gatsby y no Next.js
+# https://nextjs.org/blog/next-9-1#public-directory-support
+# público
+
+# salida de compilación de vuepress
+.vuepress/dist
+
+# vuepress v2.x directorio temporal y caché
+.temperatura
+
+# Caché de Docusaurus y archivos generados
+.docusaurio
+
+# Directorios sin servidor
+.sin servidor/
+
+# Caché de caja de fusibles
+.caja de fusibles/
+
+# Archivos locales de DynamoDB
+.dynamodb/
+
+# Archivo de puerto TernJS
+.tern-puerto
+
+# Almacena versiones de VSCode utilizadas para probar extensiones de VSCode
+.vscode-prueba
+
+# hilo v2
+.hilo/caché
+.hilo/desenchufado
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+### Parche de nodo ###
+# Directorios de paquetes web sin servidor
+.paquete web/
+
+# Caché de estilo opcional
+
+# SvelteKit construye/genera salida
+.kit-esbelto
+
+# Fin de https://www.toptal.com/developers/gitignore/api/node 
