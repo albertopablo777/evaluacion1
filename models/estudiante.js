@@ -6,8 +6,10 @@ const estudianteSchema = new mongoose.Schema({
     _apMAT: String,
     _nom1: String,
     _nom2: String,
+    _curso: String,
+    lugnac: String,
     _edad: Number 
 });
 
-const EstudianteModel = mongoose.model('Estudiante',estudianteSchema, 'estudiante');
+const EstudianteModel = mongoose.model('estudiante',estudianteSchema, 'estudiante');
 module.exports = EstudianteModel;
