@@ -1,6 +1,8 @@
 const express = require('express');
 const rutas = express.Router();
 const EstudianteModel = require('../models/estudiante');
+// OBJETIVO GENERAL. Implementar el modulo de inscripcion de estudiantes,
+//para poder realizar las designacion por curso y grados, a manera de tener informacion actualizada y pertinente.
 
 //endpoint 1.  traer todos los estudiantes
 rutas.get('/getestudiante', async (req, res) => {
@@ -133,6 +135,35 @@ rutas.get('/menoresde/:edad?', async (req, res) => {
         }
         const estudiantesmenoresde = await EstudianteModel.find(filter);
         res.status(200).json(estudiantesmenoresde);
+    } catch (error) {
+        res.status(500).json({ mensaje: error.message });
+    }
+});
+
+// - obtener estudiantes menores de la edad promedio del curso 5b; 
+// - Obtener todos los estudiantes que cumplan con la siguiente condición: 
+// - la edad de un estudiante sea menor a la edad promedio de los estudiantes que estén cursando el curso "5b".
+rutas.get('/menoresde5b', async (req, res) => {
+    try {
+        const estudiantescurso5b = await EstudianteModel.find({ _curso: '5b' });
+        const edadPromedio5b = estudiantescurso5b.reduce((sum, estudiante) => sum + estudiante._edad, 0) / estudiantescurso5b.length;
+        const estudiantesmenoresde5b = await EstudianteModel.find({ _edad: { $lt: edadPromedio5b } });
+        res.status(200).json(estudiantesmenoresde5b);
+    } catch (error) {
+        res.status(500).json({ mensaje: error.message });
+    }
+});
+
+// - obtener apellido paterno y curso de estudiantes por nombre
+rutas.get('/apellidoCurso/:nombre', async (req, res) => {
+    try {
+        const nombre = req.params.nombre;
+        const estudiantes = await EstudianteModel.find({ _nom1: { $regex: new RegExp(nombre, 'i') } });
+        const resultado = estudiantes.map(estudiante => ({
+            apellidoPaterno: estudiante._apPAT,
+            curso: estudiante._curso
+        }));
+        res.status(200).json(resultado);
     } catch (error) {
         res.status(500).json({ mensaje: error.message });
     }
