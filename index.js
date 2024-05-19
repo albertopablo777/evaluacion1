@@ -1,10 +1,14 @@
 //importacion de libs
 const express = require('express');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const Usuario = require('./models/Usuario');
 require('dotenv').config();
 const app = express();
+
 // ruta
 const estudianteRutas = require('./rutas/estudianteRutas');
+const authRutas = require('./rutas/authRutas');
 
 // configuraciones de environment
 const PORT = process.env.PORT || 8000;
@@ -20,5 +24,21 @@ mongoose.connect(MONGO_URI)
     }
 ).catch( error => console.log('error de conexion', error));
 
+const autenticar = async (req, res, next)=>{
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token)
+            res.status(401).json({mensaje: 'No existe el token de autenticacion'});
+        const decodificar = jwt.verify(token, 'clave_secreta');
+        req.usuario = await  Usuario.findById(decodificar.usuarioId);
+        next();
+    }
+    catch(error){
+        res.status(400).json({ error: error.message});
+    }
+};
+
+app.use('/auth', authRutas);
+app.use('/estudiante', autenticar, estudianteRutas);
+
 //utilizar las rutas de estudiante
-app.use('/estudiante', estudianteRutas);

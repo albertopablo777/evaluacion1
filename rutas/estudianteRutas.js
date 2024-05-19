@@ -145,7 +145,7 @@ rutas.get('/menoresde/:edad?', async (req, res) => {
 // - la edad de un estudiante sea menor a la edad promedio de los estudiantes que estén cursando el curso "5b".
 rutas.get('/menoresde5b', async (req, res) => {
     try {
-        const estudiantescurso5b = await EstudianteModel.find({ _curso: '5b' });
+        const estudiantescurso5b = await EstudianteModel.find({ _curso:'5b' });
         const edadPromedio5b = estudiantescurso5b.reduce((sum, estudiante) => sum + estudiante._edad, 0) / estudiantescurso5b.length;
         const estudiantesmenoresde5b = await EstudianteModel.find({ _edad: { $lt: edadPromedio5b } });
         res.status(200).json(estudiantesmenoresde5b);
@@ -166,6 +166,31 @@ rutas.get('/apellidoCurso/:nombre', async (req, res) => {
         res.status(200).json(resultado);
     } catch (error) {
         res.status(500).json({ mensaje: error.message });
+    }
+});
+
+// - endpoint 2. Creardos
+rutas.post('/creardos', async (req, res) => {
+    const { _apPAT, _apMAT, _nom1, _nom2 } = req.body;
+    const estudianteExistente = await EstudianteModel.findOne({ _apPAT, _apMAT, _nom1, _nom2 });
+    if (estudianteExistente) {
+        return res.status(400).json({ mensaje: 'Estudiante ya inscrito' });
+    }
+    const estudiante = new EstudianteModel({
+        _apPAT: req.body._apPAT,
+        _apMAT: req.body._apMAT,
+        _nom1: req.body._nom1,
+        _nom2: req.body._nom2,
+        _curso: req.body._curso,
+        lugnac: req.body.lugnac,
+        _edad: req.body._edad
+    })
+    //console.log(estudiante);
+    try {
+        const nuevoestudiante = await estudiante.save();
+        res.status(201).json(nuevoestudiante);
+    } catch (error) {
+        res.status(400).json({ mensaje :  error.message})
     }
 });
 
