@@ -9,7 +9,8 @@ const estudianteSchema = new mongoose.Schema({
     _nom2: String,
     _curso: String,
     lugnac: String,
-    _edad: Number 
+    _edad: Number,
+    usuario: {type: mongoose.Schema.Types.ObjectId,ref: 'usuario'}
 });
 
 const EstudianteModel = mongoose.model('estudiante',estudianteSchema, 'estudiante');

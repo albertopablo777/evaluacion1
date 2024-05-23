@@ -1,6 +1,7 @@
 const express = require('express');
 const rutas = express.Router();
 const EstudianteModel = require('../models/estudiante');
+const UsuarioModel = require('../models/Usuario'); 
 // OBJETIVO GENERAL. Implementar el modulo de inscripcion de estudiantes,
 //para poder realizar las designacion por curso y grados, a manera de tener informacion actualizada y pertinente.
 
@@ -23,9 +24,9 @@ rutas.post('/crear', async (req, res) => {
         _nom2: req.body._nom2,
         _curso: req.body._curso,
         lugnac: req.body.lugnac,
-        _edad: req.body._edad
+        _edad: req.body._edad,
+        usuario: req.usuario //asignar el id del usuario
     })
-    //console.log(estudiante);
     try {
         const nuevoestudiante = await estudiante.save();
         res.status(201).json(nuevoestudiante);
@@ -33,6 +34,7 @@ rutas.post('/crear', async (req, res) => {
         res.status(400).json({ mensaje :  error.message})
     }
 });
+
 //endpoint 3. Editar
 rutas.put('/editar/:id', async (req, res) => {
     try {
@@ -193,5 +195,42 @@ rutas.post('/creardos', async (req, res) => {
         res.status(400).json({ mensaje :  error.message})
     }
 });
+
+
+//REPORTES 1
+rutas.get('/estudiantePorUsuario/:usuarioId', async (req, res) =>{
+    const {usuarioId} = req.params;
+    console.log(usuarioId);
+    try{
+        const usuario = await UsuarioModel.findById(usuarioId);
+        if (!usuario)
+            return res.status(404).json({mensaje: 'usuario no encontrado'});
+        const estudiante = await EstudianteModel.find({ usuario: usuarioId}).populate('usuario');
+        res.json(estudiante);
+
+    } catch(error){
+        res.status(500).json({ mensaje :  error.message})
+    }
+});
+
+//REPORTES 2
+rutas.get('/promedioEdadEstudiante/:usuarioId', async (req, res) =>{
+    const {usuarioId} = req.params;
+    console.log(usuarioId);
+    try{
+        const usuario = await UsuarioModel.findById(usuarioId);
+        if (!usuario)
+            return res.status(404).json({mensaje: 'usuario no encontrado'});
+        const estudiante = await EstudianteModel.find({ usuario: usuarioId}).populate('usuario');
+        if (estudiante.length === 0)
+            return res.status(404).json({mensaje: 'no se encontraron estudiantes asociados al usuario'});
+        const sumaEdades = estudiante.reduce((acc, estudiante) => acc + estudiante._edad, 0);
+        const promedioEdad = sumaEdades / estudiante.length;
+        res.json({promedioEdad});
+
+    } catch(error){
+        res.status(500).json({ mensaje :  error.message})
+    }
+})
 
 module.exports = rutas;

@@ -10,12 +10,10 @@ app.use('/estudiante', estudianteRutas);
 describe('Pruebas Unitarias para estudiantes', () => {
     //se ejecuta antes de iniciar las pruebas
     beforeEach(async () => {
-        await mongoose.connect('mongodb://127.0.0.1:27017/inscripcionEST',{
-            useNewUrlParser : true,            
-        });
+        await mongoose.connect('mongodb://127.0.0.1:27017/inscripcionEST');
         await EstudianteModel.deleteMany({});
     });
-    // al finalziar las pruebas
+    // al finalizar las pruebas
     afterAll(() => {
         return mongoose.connection.close();
       });
@@ -30,6 +28,7 @@ describe('Pruebas Unitarias para estudiantes', () => {
         expect(res.statusCode).toEqual(200);
         expect(res.body).toHaveLength(2);
     }, 10000);  
+    //2do test : POST 
     test('Deberia agregar un nuevo estudiante: POST: /crear', async() => {
         const nuevoEstudiante = {
             _apPAT: 'dias',
@@ -59,10 +58,11 @@ describe('Pruebas Unitarias para estudiantes', () => {
             _apPAT: 'dias (editado)',
             _apMAT: 'oscuros (editado)',
             _nom1: 'sonde (editado)',
-            _nom2: 'noche (editado)',
+            _nom2: 'noche (editado)', 
             _curso: '5b (editado)',
             lugnac: 'la paz (editado)',
-            _edad: '16'
+            _edad: '16',
+            usuario: {type: mongoose.Schema.Types.ObjectId, ref:'usuario'}
         };
         const res =  await request(app)
                             .put('/estudiante/editar/'+estudianteCreado._id)
@@ -83,5 +83,5 @@ describe('Pruebas Unitarias para estudiantes', () => {
                                 .delete('/estudiante/eliminar/'+estudianteCreado._id);
         expect(res.statusCode).toEqual(200);
         expect(res.body).toEqual({mensaje:' Estudiante eliminado'});
-    });
+    });   
 });
