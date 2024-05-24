@@ -7,9 +7,10 @@ require('dotenv').config();
 const app = express();
 
 // ruta
+
 const estudianteRutas = require('./rutas/estudianteRutas');
 const authRutas = require('./rutas/authRutas');
-
+const materiaRutas = require('./rutas/materiaRutas');
 // configuraciones de environment
 const PORT = process.env.PORT || 8000;
 const MONGO_URI = process.env.MONGO_URI;
@@ -20,7 +21,7 @@ app.use(express.json());
 mongoose.connect(MONGO_URI)
 .then(() => {
         console.log('Conexion exitosa');
-        app.listen(PORT, () => {console.log("Servidor express corriendo en el puerto: "+PORT)})
+        app.listen(PORT, () => {console.log("Servidor express corriendo en el puerto: "+ PORT)})
     }
 ).catch( error => console.log('error de conexion', error));
 
@@ -38,7 +39,8 @@ const autenticar = async (req, res, next)=>{
     }
 };
 
+app.use('/materia', autenticar,materiaRutas);
 app.use('/auth', authRutas);
-app.use('/estudiante', autenticar, estudianteRutas);
+app.use('/estudiante', autenticar,estudianteRutas);
 
 //utilizar las rutas de estudiante

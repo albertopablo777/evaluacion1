@@ -4,6 +4,7 @@ const Usuario = require('../models/Usuario');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
 //Registro 
 rutas.post('/registro', async (req, res) => {
     try {
@@ -29,10 +30,25 @@ rutas.post('/iniciarsesion', async (req, res) => {
             return res.status(401).json({ error : 'Contrasenia invalido!!!!!'});
         //creacion de token 
         const token = jwt.sign({ usuarioId: usuario._id },'clave_secreta', {expiresIn: '5h'});
+        //req.session.token = token;
         res.json( {token});
     }
     catch(error){
         res.status(500).json({mensaje: error.message});
     }
 });
+
+// Cerrar sesión
+rutas.post('/cerrarsesion', (req, res) => {
+    try {
+      // Eliminar el token del cliente
+      res.clearCookie('token');
+      //req.session.token = null;
+      res.status(200).json({ mensaje: 'Sesión cerrada' });
+    } catch (error) {
+      res.status(500).json({ mensaje: error.message });
+    }
+  });
+
+
 module.exports = rutas;

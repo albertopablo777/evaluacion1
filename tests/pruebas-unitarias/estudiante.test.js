@@ -28,6 +28,7 @@ describe('Pruebas Unitarias para estudiantes', () => {
         expect(res.statusCode).toEqual(200);
         expect(res.body).toHaveLength(2);
     }, 10000);  
+    
     //2do test : POST 
     test('Deberia agregar un nuevo estudiante: POST: /crear', async() => {
         const nuevoEstudiante = {
@@ -65,7 +66,7 @@ describe('Pruebas Unitarias para estudiantes', () => {
             usuario: {type: mongoose.Schema.Types.ObjectId, ref:'usuario'}
         };
         const res =  await request(app)
-                            .put('/estudiante/editar/'+estudianteCreado._id)
+                            .put('/estudiante/editar/'+ estudianteCreado._id)
                             .send(estudianteActualizar);
         expect(res.statusCode).toEqual(201);
         expect(res.body._apPAT).toEqual(estudianteActualizar._apPAT);                   
